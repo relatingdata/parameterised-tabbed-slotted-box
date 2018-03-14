@@ -60,39 +60,50 @@ const main = (params) => {
 
  'use strict';
 
- const W = 0, L = 1, H = 2, ss = [W, L, H], c = ["red", "green", "blue"],
+ const  W = 0, L = 1, H = 2, ss = [W, L, H], /* c = ["Red", "Green", "Blue"], */ c = [[0.8, 0, 0, 0.6], [0, 0.8, 0, 0.6], [0, 0, 0.8, 0.6]],
 
-       S = [params.width, params.length, params.height],
+        S = [params.width, params.length, params.height],
 
-       O = [params.overtopwidth, params.overtoplength],
-  
-       TH = [[params.thickleft,  params.thickfront, params.thicktop],
+        O = [params.overtopwidth, params.overtoplength],
+
+        N = 0, F = 1, // near and far sides
+
+       Th = [[params.thickleft,  params.thickfront, params.thicktop],
              [params.thickright, params.thickback,  params.thickbottom]],
  
        TS = params.tabsize,
 
-        s = [[       TH[0][W],          S[W] + 2*O[W]         , S[H] - TH[0][H]],
-             [S[L] - TH[0][W],                        TH[0][L], S[H] - TH[0][H]],
-             [S[L] + TH[0][W] + 2*O[L], S[W] + 2*O[W] + 2*O[L],        TH[0][H]]].map((p) => cube({size: p, center: true})),
+        E = params.expansion,
 
-       TT = [[TS, TH[0][L], TH[0][H]], [TH[0][W], TS, TH[0][H]], [TH[0][W], TH[0][L], TS]].map((p) => cube({size: p, center: true})),
+        s = [[       Th[0][W],          S[W] + 2*O[W]         , S[H] - Th[0][H]],
+             [S[L] - Th[0][W],                        Th[0][L], S[H] - Th[0][H]],
+             [S[L] + Th[0][W] + 2*O[L], S[W] + 2*O[W] + 2*O[L],        Th[0][H]]].map((p) => cube({size: p, center: true})),
 
-       SS = [S[L]/2, (S[W] - TH[0][L])/2, S[H]/2],
+       TT = [[TS, Th[0][L], Th[0][H]], [Th[0][W], TS, Th[0][H]], [Th[0][W], Th[0][L], TS]].map((p) => cube({size: p, center: true})),
 
-       T = ss.map((p) => union(Array.from({length: Math.ceil((SS[p] - TS)/TS) + 1},
-             (v, i) => TT[p].translate([p == W ? i*2*TS : 0, p == L ? i*2*TS : 0, p == H ? i*2*TS : 0]))).center()),
+       SS = [S[L]/2, (S[W] - Th[0][L])/2, S[H]/2],
 
-//       r =[[-SS[W],  SS[W]], [-SS[L],  SS[L]], [-SS[H], SS[H]]],
-       r =[[-SS[W], 0, SS[W]], [-SS[L],  0, SS[L]], [-SS[H],]],
-       t = [r[W].map((p) => [union(...r[L].map((q) => T[H].translate([p, q, 0]))),
-                                      r[H].map((q) => T[L].translate([p, 0, q]))]),
-            r[L].map((p) =>       [...r[W].map((q) => T[H].translate([q, p, 0])),
-                                   ...r[H].map((q) => T[W].translate([0, p, q]))]),
-                             union(...r[L].map((q) => T[W].translate([0, q, 0])),
-                                   ...r[W].map((q) => T[L].translate([q, 0, 0])))];
+        T = ss.map((p) => union(Array.from({length: Math.ceil((SS[p] - TS)/TS) + 1},
+                                           (v, i) => TT[p].translate([p == W ? i*2*TS : 0, p == L ? i*2*TS : 0, p == H ? i*2*TS : 0]))).center()),
+
+       r = ss.map((p) => [-SS[p],  SS[p]]),
+//       r = [[-SS[W],  SS[W]], [-SS[L],  SS[L]], [-SS[H], SS[H]]],
+//       r = [[-SS[W], 0, SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H], SS[H]]],
+//       r = [[-SS[W], 0, SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H]]],
+
+       e = ss.map((p) => [-Th[0][p], Th[0][p]]),
+//       e = [[-Th[0][W], 0, Th[0][W]], [-Th[0][L], 0, 0, 0, Th[0][L]], [-Th[0][H], Th[0][H]]],
+
+       t = [[union(...r[L].map((q) => T[H].translate([0, q, 0]))),
+                      r[H].map((q) => T[L].translate([0, 0, q]))],
+                  [...r[W].map((q) => T[H].translate([q, 0, 0])),
+                   ...r[H].map((q) => T[W].translate([0, 0, q]))],
+             union(...r[L].map((q) => T[W].translate([0, q, 0])),
+                   ...r[W].map((q) => T[L].translate([q, 0, 0])))];
  
- return union(// union(ss.map((p) => color(c[p],T[p]))).translate([0,0,2*S[H]]),
-	      color(c[W], ...r[W].map((q,i) => union(difference(s[W].translate([q, 0, 0]), t[W][i][0]), t[W][i][1]))),
-              color(c[L], ...r[L].map((q,i) => union(s[L].translate([0, q, 0]), t[L][i]))),
-              color(c[H], ...r[H].map((q,i) => difference(s[H], t[H]).translate([0, 0, q])))).translate([0,0,SS[H] + TH[0][H]]);};
+ return union( // union(ss.map((p) => color(c[p],T[p]))).translate([0, 0, S[H]]),
+
+              color(c[W], ...r[W].map((q,i) => union(difference(s[W], t[W][0]), t[W][1]).translate([q + E*e[W][i], 0, 0]))),
+              color(c[L], ...r[L].map((q,i) => union(s[L], t[L]).translate([0, q + E*e[L][i], 0]))),
+              color(c[H], ...r[H].map((q,i) => difference(s[H], t[H]).translate([0, 0, q + E*e[H][i]])))).translate([0, 0, 2*(SS[H] + Th[0][H])]);};
 
