@@ -5,28 +5,29 @@
 // If you make significant discoveries or improvements please share :-)
 //
 
-
 function getParameterDefinitions() {
 
- return [
-  [`width`,            `float`, 40,  `Breedte doos in mm:`,        `Width of box in mm:`],
-  [`length`,           `float`, 80,  `Diepte doos in mm:`,         `Length of box in mm:`],
-  [`height`,           `float`, 20,  `Hoogte doos in mm:`,         `Height of box in mm:`],
-  [`tabsize`,          `int`,   10,  `Tanden grootte in mm:`,      `Tab size in mm:`],
-//[`partition`,        `int`,   1,   `Dikte materiaal:`,           `number of partitions:`],
-  [`thickleft`,        `float`, 3,   `Dikte materiaal:`,           `Thickness of the left side material:`],
-//[`thickmiddle`,      `float`, 3,   `Dikte materiaal:`,           `Thickness of the middle partition material:`],
-  [`thickright`,       `float`, 3,   `Dikte materiaal:`,           `Thickness of the right side material:`],
-  [`thickfront`,       `float`, 2,   `Dikte materiaal:`,           `Thickness of the front material:`],
-  [`thickback`,        `float`, 2,   `Dikte materiaal:`,           `Thickness of the back material:`],
-  [`thicktop`,         `float`, 1,   `Dikte materiaal:`,           `Thickness of the top material:`],
-  [`thickbottom`,      `float`, 1,   `Dikte materiaal:`,           `Thickness of the bottom material:`],
-  [`overtoplength`,    `float`, 0,   `Dikte materiaal:`,           `Extra length top material:`],
-  [`overtopwidth`,     `float`, 0,   `Dikte materiaal:`,           `Extra width top  material:`],
-  [`overbottomlength`, `float`, 0,   `Dikte materiaal:`,           `Extra length bottom material:`],
-  [`overbottomwidth`,  `float`, 0,   `Dikte materiaal:`,           `Extra width bottom material:`],
-  [`explosion`,        `float`, 1.0, `Explosion`,                  `Assembled view explosion (times Thickness): `],
-//[`kerf`,             `float`, 0.0, `Breedte laserstraal in mm:`, `Width of laser beam cut in mm:`],
+ const Red = `Red`, Green = `Green`, Blue = `Blue`, Black = `Black`;
+  return [
+   [`PTBox`, `group`, `Parameterised Tabbed Box`, Black ],
+  [`width`,            `float`, 80,  `Diepte doos in mm:`,         `Front to Back Length of box in mm:`, Red],
+  [`length`,           `float`, 40,  `Breedte doos in mm:`,        `Left to Right Width of box in mm:`, Green],
+  [`height`,           `float`, 20,  `Hoogte doos in mm:`,         `Bottom to Top Height of box in mm:`, Blue],
+  [`tabsize`,          `int`,   10,  `Tanden grootte in mm:`,      `Edge tab size in mm:`, Black],
+  [`thickfront`,       `float`, 2,   `Dikte materiaal:`,           `Thickness of the front material:`, Red],
+  [`thickback`,        `float`, 2,   `Dikte materiaal:`,           `Thickness of the back material:`, Red],
+  [`partition`,        `int`,   0,   `Dikte materiaal:`,           `Number of partitions:`, Green],
+  [`thickleft`,        `float`, 3,   `Dikte materiaal:`,           `Thickness of the left side material:`, Green],
+  [`thickmiddle`,      `float`, 3,   `Dikte materiaal:`,           `Thickness of the middle partition material:`, Green],
+  [`thickright`,       `float`, 3,   `Dikte materiaal:`,           `Thickness of the right side material:`, Green],
+  [`thicktop`,         `float`, 1,   `Dikte materiaal:`,           `Thickness of the top material:`, Blue],
+  [`thickbottom`,      `float`, 1,   `Dikte materiaal:`,           `Thickness of the bottom material:`, Blue],
+  [`overtoplength`,    `float`, 0,   `Dikte materiaal:`,           `Extra length top material:`, Blue],
+  [`overtopwidth`,     `float`, 0,   `Dikte materiaal:`,           `Extra width top  material:`, Blue],
+  [`overbottomlength`, `float`, 0,   `Dikte materiaal:`,           `Extra length bottom material:`, Blue],
+  [`overbottomwidth`,  `float`, 0,   `Dikte materiaal:`,           `Extra width bottom material:`, Blue],
+  [`explosion`,        `float`, 1.0, `Explosion`,                  `Assembled view explosion (times Thickness):`, Black],
+//[`kerf`,             `float`, 0.0, `Breedte laserstraal in mm:`, `Width of laser beam cut in mm:`, Black],
   [`transparent`, `choice`, [`TRANSPARENT`, `SOLID`], [`Transparent`, `Solid`], [`Transparent`, `Solid`], `Colour:`, `Colour:`, `TRANSPARENT`],
   /* [
    `type`, `choice`,
@@ -58,8 +59,8 @@ function getParameterDefinitions() {
   [`hw5`, `float`, 0, `Gat achter hoogte`,  `Hole back height:`],
   [`hh2`, `float`, 0, `Gat voor breedte`,   `Hole front width:`],
   [`hw2`, `float`, 0, `Gat voor hoogte`,    `Hole front height:`] */ ].map(
-              P => (P[1] == `float` || P[1] == `int`) ? {name: P[0], type:  P[1], initial: P[2], caption: P[4]}
-             : {name: P[0],  type: P[1], values: P[2] ,captions: P[4], captionNL: P[5], caption: P[6], initial: P[7]});}
+              P => (P[1] == `float` || P[1] == `int`) ? {name: P[0], type:  P[1], initial: P[2], caption: `<span style="color:${P[5]}">${P[4]}</span>`}
+             : (P[1] == `group`) ? {name: P[0], type: P[1], caption: `<h2><span style="color:${P[3]}">${P[2]}</span></h2>`} : {name: P[0],  type: P[1], values: P[2] ,captions: P[4], caption: P[6], initial: P[7]});}
 
 
 const main = (params) => {
@@ -68,7 +69,7 @@ const main = (params) => {
 
  const  W = 0, L = 1, H = 2, ss = [W, L, H],
 
-        c = params.transparent == `SOLID` ? ["Red", "Green", "Blue"] : [[0.8, 0, 0, 0.6], [0, 0.8, 0, 0.6], [0, 0, 0.8, 0.6]],
+        c = params.transparent == `SOLID` ? [`Red`, `Green`, `Blue`] : [[0.8, 0, 0, 0.6], [0, 0.8, 0, 0.6], [0, 0, 0.8, 0.6]],
 
         //
         // for measuring displacement from center and thicknesses
@@ -81,12 +82,14 @@ const main = (params) => {
         S = [params.width, params.length, params.height],
 
         O = [[params.overbottomwidth, params.overbottomlength],
-             [params.overtopwidth,  params.overtoplength]    ],
+             [                     0,                       0],
+             [   params.overtopwidth,    params.overtoplength]],
        
-        N = 0, /* M = 1, F = 2, pp = [N, M, F], */ F = 1, pp = [N, F], // near, middle (partitions) and far sides
+        N = 0, M = 1, F = 2, pp = [N, M, F], /* F = 1, pp = [N, F],*/  // near, middle (partitions) and far sides
 
-       Th = [[params.thickback,  params.thickleft,  params.thickbottom],
-             [params.thickfront, params.thickright, params.thicktop   ]],
+       Th = [[params.thickback,   params.thickleft,   params.thickbottom],
+             [params.thickmiddle, params.thickmiddle, params.thickmiddle],  // one for each direction ??
+             [params.thickfront,  params.thickright,  params.thicktop   ]],
  
        TS = params.tabsize,
 
@@ -118,8 +121,14 @@ const main = (params) => {
        // TODO // able to leave off any side in one direction
        // Able to leave out top or bottom
 
-       r = ss.map((s) => [-SS[N][s], SS[F][s]]),
-       e = ss.map((s) => [-Th[N][s], Th[F][s]]),
+       r = ss.map((s) => [-SS[N][s], 0, SS[F][s]]),
+       e = ss.map((s) => [-Th[N][s], 0, Th[F][s]]),
+//       r = [[-SS[W], SS[W]], [-SS[L], 0, SS[L]], [-SS[H], SS[H]]], // middle partition
+//       r = [[-SS[W], SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H], SS[H]]],
+//      r = [[-SS[W], SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H]]],
+
+//         e = [[-Th[0][W], Th[0][W]], [-Th[0][L], 0, Th[0][L]], [-Th[0][H], Th[0][H]]],
+//       e = [[-Th[0][W], Th[0][W]], [-Th[0][L], 0, 0, 0, Th[0][L]], [-Th[0][H], Th[0][H]]],
 
        t = pp.map((p) => [[union(...r[L].map((r,i) => TT[p][i][H].translate([0, r, 0]))),
                                     r[H].map((r,i) => TT[p][i][L].translate([0, 0, r]))],
@@ -135,4 +144,5 @@ const main = (params) => {
               color(c[W], ...r[W].map((r,i) => union(difference(P[i][W], t[i][W][0]), t[i][W][1]).translate([r + E*e[W][i], 0, 0]))),
               color(c[L], ...r[L].map((r,i) => union(P[i][L], t[i][L]).translate([0, r + E*e[L][i] , 0]))),
               color(c[H], ...r[H].map((r,i) => difference(P[i][H], t[i][H]).translate([0, 0, r + E*e[H][i]])))).translate([0, 0, 2*(SS[0][H] + Th[0][H])]);};
+
 
