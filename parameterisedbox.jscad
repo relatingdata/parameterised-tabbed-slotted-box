@@ -121,8 +121,8 @@ const main = (params) => {
        // TODO // able to leave off any side in one direction
        // Able to leave out top or bottom
 
-       r = ss.map((s) => [-SS[N][s], 0, SS[F][s]]),
-       e = ss.map((s) => [-Th[N][s], 0, Th[F][s]]),
+       r = ss.map((s) => [-SS[N][s], SS[F][s]]),
+       e = ss.map((s) => [-Th[N][s], Th[F][s]]),
 //       r = [[-SS[W], SS[W]], [-SS[L], 0, SS[L]], [-SS[H], SS[H]]], // middle partition
 //       r = [[-SS[W], SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H], SS[H]]],
 //      r = [[-SS[W], SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H]]],
