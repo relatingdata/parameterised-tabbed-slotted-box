@@ -141,8 +141,9 @@ const main = (params) => {
  
  return union( // union(pp.map((p) => union(pp.map((q) => union(ss.map((s) => color(c[s], TT[q][p][s]))).translate([0, (q + 1)*S[L], (p + 1)*S[H]]))))), 
 
-              color(c[W], ...r[W].map((r,i) => i != 1 ? union(difference(P[i][W], t[i][W][0]), t[i][W][1]).translate([r + E*e[W][i], 0, 0])) : cube()),
+              color(c[W], ...r[W].map((r,i) => i != 1 ? union(difference(P[i][W], t[i][W][0]), t[i][W][1]).translate([r + E*e[W][i], 0, 0]) : cube())),
               color(c[L], ...r[L].map((r,i) => union(P[i][L], t[i][L]).translate([0, r + E*e[L][i] , 0]))),
-              color(c[H], ...r[H].map((r,i) => i ! = 1 ? difference(P[i][H], t[i][H]).translate([0, 0, r + E*e[H][i]])) : cube())).translate([0, 0, 2*(SS[0][H] + Th[0][H])]);};
+              color(c[H], ...r[H].map((r,i) => i != 1 ? difference(P[i][H], t[i][H]).translate([0, 0, r + E*e[H][i]]) : cube()))).translate([0, 0, 2*(SS[0][H] + Th[0][H])]);};
+
 
 
