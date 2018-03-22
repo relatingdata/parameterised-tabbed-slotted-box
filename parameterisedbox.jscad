@@ -88,7 +88,7 @@ const main = (params) => {
         N = 0, M = 1, F = 2, pp = [N, M, F], /* F = 1, pp = [N, F],*/  // near, middle (partitions) and far sides
 
        Th = [[params.thickback,   params.thickleft,   params.thickbottom],
-             [params.thickmiddle, params.thickmiddle, params.thickmiddle],  // one for each direction ??
+             [0.00001,            params.thickmiddle, 0.00001           ],  // one for each direction ??
              [params.thickfront,  params.thickright,  params.thicktop   ]],
  
        TS = params.tabsize,
@@ -121,8 +121,8 @@ const main = (params) => {
        // TODO // able to leave off any side in one direction
        // Able to leave out top or bottom
 
-       r = ss.map((s) => [-SS[N][s], SS[F][s]]),
-       e = ss.map((s) => [-Th[N][s], Th[F][s]]),
+       r = ss.map((s) => [-SS[N][s], 0, SS[F][s]]),
+       e = ss.map((s) => [-Th[N][s], 0, Th[F][s]]),
 //       r = [[-SS[W], SS[W]], [-SS[L], 0, SS[L]], [-SS[H], SS[H]]], // middle partition
 //       r = [[-SS[W], SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H], SS[H]]],
 //      r = [[-SS[W], SS[W]], [-SS[L], -SS[L]/2, 0, SS[L]/2, SS[L]], [-SS[H]]],
