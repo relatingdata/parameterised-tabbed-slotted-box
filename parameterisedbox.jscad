@@ -140,9 +140,6 @@ const main = (params) => {
  
        // left and right side shouldn't move for exploded view ??
  
- console.log(JSON.stringify(pp));
-
-
  return union( // union(pp.map((p) => union(pp.map((q) => union(ss.map((s) => color(c[s], TT[q][p][s]))).translate([0, (q + 1)*S[L], (p + 1)*S[H]]))))), 
 
               color(c[W], ...r[W].map((r,i) => i == N || i == F ? union(difference(P[i][W], t[i][W][0]), t[i][W][1]).translate([r + E*e[W][i], 0, 0]) : [])),
