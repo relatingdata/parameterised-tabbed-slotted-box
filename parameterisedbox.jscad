@@ -1,12 +1,5 @@
 //
-//        File: https://github.com/relatingdata/parameterised-tabbed-slotted-box/edit/master/parameterisedbox.jscad
-//       Title: Parametised universal tabbed/slotted divided .... box eventually for laser cutting and/or 3D printing
-// Inspiration:
-//      Author: Laust Frederiksen
-// 
-//    Revision: 0.000000001
-//
-//  License: MIT License
+// Author: Laust Frederiksen
 //
 // Permissions is given to play with this at your own risk :-) ;-)
 // If you make significant discoveries or improvements please share :-)
@@ -25,7 +18,7 @@ function getParameterDefinitions() {
   [`PTMat`, `group`, `Material Thicknesses`, Black, 5 ],
   [`thickfront`,       `float`, 2,   `Dikte materiaal:`,           `Thickness of the front material:`, Red],
   [`thickback`,        `float`, 2,   `Dikte materiaal:`,           `Thickness of the back material:`, Red],
-  [`partition`,        `int`,   1,   `Dikte materiaal:`,           `Number of partitions:`, Green],
+  [`partitions`,       `int`,   1,   `Dikte materiaal:`,           `Number of partitions:`, Green],
   [`thickleft`,        `float`, 3,   `Dikte materiaal:`,           `Thickness of the left side material:`, Green],
   [`thickmiddle`,      `float`, 3,   `Dikte materiaal:`,           `Thickness of the middle partition material:`, Green],
   [`thickright`,       `float`, 3,   `Dikte materiaal:`,           `Thickness of the right side material:`, Green],
@@ -57,18 +50,18 @@ function getParameterDefinitions() {
    [`All Sides`, `Bottom`, `Top`, `Left`, `Right`, `Front`, `Back`],
    `Toon:`, `Show:`, `ALL`], */ 
   [`PTHole`, `group`, `Hole Dimensions`, Black, 5 ],
- /* [`h000`, `float`, 0, `Gat voor breedte`,   `Hole front width:`, Red],
-  [`h001`, `float`, 0, `Gat voor hoogte`,    `Hole front height:`, Red],
-  [`h010`, `float`, 0, `Gat achter breedte`, `Hole back width:`, Red],
-  [`h011`, `float`, 0, `Gat achter hoogte`,  `Hole back height:`, Red],
-  [`h100`, `float`, 0, `Gat top breedte`,    `Hole top width:`, Blue],
-  [`h101`, `float`, 0, `Gat top hoogte`,     `Hole top length:`, Blue],
-  [`h110`, `float`, 0, `Gat bodem breedte`,  `Hole bottom width:`, blue],
-  [`h111`, `float`, 0, `Gat bodem hoogte`,   `Hole bottom length:`], */
-  [`h200`, `float`, 0, `Gat links breedte`,  `Hole left length:`, Green],
-  [`h201`, `float`, 0, `Gat links hoogte`,   `Hole left height:`, Green],
-  [`h210`, `float`, 0, `Gat rechts breedte`, `Hole right length:`, Green],
-  [`h211`, `float`, 0, `Gat rechts hoogte`,  `Hole right height:`, Green]].map(
+  [`h000`, `float`, 0, `Gat voor breedte`,   `Hole front width:`],
+  [`h001`, `float`, 0, `Gat voor hoogte`,    `Hole front height:`],
+  [`h010`, `float`, 0, `Gat achter breedte`, `Hole back width:`],
+  [`h011`, `float`, 0, `Gat achter hoogte`,  `Hole back height:`],
+  [`h100`, `float`, 0, `Gat top breedte`,    `Hole top width:`],
+  [`h101`, `float`, 0, `Gat top hoogte`,     `Hole top length:`],
+  [`h110`, `float`, 0, `Gat bodem breedte`,  `Hole bottom width:`],
+  [`h111`, `float`, 0, `Gat bodem hoogte`,   `Hole bottom length:`],
+  [`h200`, `float`, 0, `Gat links breedte`,  `Hole left length:`],
+  [`h201`, `float`, 0, `Gat links hoogte`,   `Hole left height:`],
+  [`h210`, `float`, 0, `Gat rechts breedte`, `Hole right length:`],
+  [`h211`, `float`, 0, `Gat rechts hoogte`,  `Hole right height:`]].map(
               P => (P[1] == `float` || P[1] == `int`) ? {name: P[0], type:  P[1], initial: P[2], caption: `<span style="color:${P[5]}">${P[4]}</span>`}
                                   : (P[1] == `group`) ? {name: P[0], type: P[1], caption: `<h${P[4]}><span style="color:${P[3]}">${P[2]}</span></h${P[4]}>`}
                                                       : {name: P[0],  type: P[1], values: P[2] ,captions: P[4], caption: P[6], initial: P[7]});}
@@ -93,16 +86,20 @@ const main = (params) => {
         S = [params.width, params.length, params.height],
 
         O = [[params.overbottomwidth, params.overbottomlength],
-             [                     0,                       0],
+             ...Array.from({length: params.partitions }, (v, j) => [0, 0]),
              [   params.overtopwidth,    params.overtoplength]],
        
-        N = 0, M = 1, F = 2, pp = [N, M, F], mm=[M], // near, middle (partitions) and far sides
+       nn = params.partitions + 2,
+
+       pp = Array.from({length: nn}, (v, j) => j), 
+    
+        N = 0, F = params.partitions + 1, // near and far sides
 
        Th = [[params.thickback,   params.thickleft,   params.thickbottom],
-             [params.thickmiddle, params.thickmiddle, params.thickmiddle],  // one for each direction ??
+             ...Array.from({length: params.partitions }, (v, j) => [params.thickmiddle, params.thickmiddle, params.thickmiddle]),  // one for each direction ??
              [params.thickfront,  params.thickright,  params.thicktop   ]],
- 
-       TS = params.tabsize, // one for each direction ??
+
+       TS = params.tabsize, // one for each direction ?? Is easy!
 
         E = params.explosion,
 
@@ -131,21 +128,24 @@ const main = (params) => {
 
        // TODO // able to leave off any side in one direction (trimming required)
        // Able to leave out top or bottom
-
-       r = ss.map((s) => [-SS[N][s], 0, SS[F][s]]),
-       e = ss.map((s) => [-Th[N][s], 0, Th[F][s]]),
+       r = ss.map((s) => Array.from({length: nn}, (v,j) => ((2*j+1 - nn) < 0 ? SS[N][s] : SS[F][s] )*(2*j+1 - nn)/(nn - 1))),
+       e = ss.map((s) => Array.from({length: nn}, (v,j) => ((2*j+1 - nn) < 0 ? Th[N][s] : Th[F][s] )*(2*j+1 - nn)/(nn - 1))),
 
        t = pp.map((p) => [[union(...r[L].map((r,i) => TT[p][i][H].translate([0, r, 0]))),
-                                    r[H].map((r,i) => TT[p][i][L].translate([0, 0, r]))],
+                           union(...r[H].map((r,i) => i == N || i == F ? TT[p][i][L].translate([0, 0, r]) : []))],
                                 [...r[W].map((r,i) => TT[i][p][H].translate([r, 0, 0])),
                                  ...r[H].map((r,i) => TT[p][i][W].translate([0, 0, r]))],
                            union(...r[L].map((r,i) => TT[i][p][W].translate([0, r, 0])),
-                                 ...r[W].map((r,i) => i != M ? TT[i][p][L].translate([r, 0, 0]) : []))]);
+                                 ...r[W].map((r,i) => i == N || i == F ? TT[i][p][L].translate([r, 0, 0]) : []))]);
  
        // left and right side shouldn't move for exploded view ??
  
+ console.log(JSON.stringify(pp));
+
+
  return union( // union(pp.map((p) => union(pp.map((q) => union(ss.map((s) => color(c[s], TT[q][p][s]))).translate([0, (q + 1)*S[L], (p + 1)*S[H]]))))), 
 
-              color(c[W], ...r[W].map((r,i) => i != M ? union(difference(P[i][W], t[i][W][0]), t[i][W][1]).translate([r + E*e[W][i], 0, 0]) : [])),
+              color(c[W], ...r[W].map((r,i) => i == N || i == F ? union(difference(P[i][W], t[i][W][0]), t[i][W][1]).translate([r + E*e[W][i], 0, 0]) : [])),
               color(c[L], ...r[L].map((r,i) => union(P[i][L], t[i][L]).translate([0, r + E*e[L][i] , 0]))),
-              color(c[H], ...r[H].map((r,i) => i != M ? difference(P[i][H], t[i][H]).translate([0, 0, r + E*e[H][i]]) : []))).translate([0, 0, 2*(SS[0][H] + Th[0][H])]);};
+              color(c[H], ...r[H].map((r,i) => i == N || i == F ? difference(P[i][H], t[i][H]).translate([0, 0, r + E*e[H][i]]) : []))).translate([0, 0, 2*(SS[N][H] + Th[N][H])]);};
+              
