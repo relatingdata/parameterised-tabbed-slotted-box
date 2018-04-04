@@ -1,0 +1,29 @@
+[ 52%] Building CXX object CMakeFiles/embedded_lld_coff.dir/deps/lld/COFF/PDB.cpp.o
+[ 53%] Building CXX object CMakeFiles/embedded_lld_coff.dir/deps/lld/COFF/Strings.cpp.o
+[ 53%] Building CXX object CMakeFiles/embedded_lld_coff.dir/deps/lld/COFF/SymbolTable.cpp.o
+/root/zz/zig-master/deps/lld/COFF/SymbolTable.cpp: In member function ‘void lld::coff::SymbolTable::reportRemainingUndefines()’:
+/root/zz/zig-master/deps/lld/COFF/SymbolTable.cpp:86:46: error: ‘void* memcpy(void*, const void*, size_t)’ writing to an object of type ‘class lld::coff::Symbol’ with no trivial copy-assignment; use copy-initialization instead [-Werror=class-memaccess]
+         memcpy(Sym, D, sizeof(DefinedRegular));
+                                              ^
+In file included from /root/zz/zig-master/deps/lld/COFF/SymbolTable.cpp:14:
+/root/zz/zig-master/deps/lld/COFF/Symbols.h:38:7: note: ‘class lld::coff::Symbol’ declared here
+ class Symbol {
+       ^~~~~~
+/root/zz/zig-master/deps/lld/COFF/SymbolTable.cpp:88:47: error: ‘void* memcpy(void*, const void*, size_t)’ writing to an object of type ‘class lld::coff::Symbol’ with no trivial copy-assignment; use copy-initialization instead [-Werror=class-memaccess]
+         memcpy(Sym, D, sizeof(DefinedAbsolute));
+                                               ^
+In file included from /root/zz/zig-master/deps/lld/COFF/SymbolTable.cpp:14:
+/root/zz/zig-master/deps/lld/COFF/Symbols.h:38:7: note: ‘class lld::coff::Symbol’ declared here
+ class Symbol {
+       ^~~~~~
+/root/zz/zig-master/deps/lld/COFF/SymbolTable.cpp:90:43: error: ‘void* memcpy(void*, const void*, size_t)’ writing to an object of type ‘class lld::coff::Symbol’ with no trivial copy-assignment; use copy-initialization instead [-Werror=class-memaccess]
+         memcpy(Sym, D, sizeof(SymbolUnion));
+                                           ^
+In file included from /root/zz/zig-master/deps/lld/COFF/SymbolTable.cpp:14:
+/root/zz/zig-master/deps/lld/COFF/Symbols.h:38:7: note: ‘class lld::coff::Symbol’ declared here
+ class Symbol {
+       ^~~~~~
+cc1plus: all warnings being treated as errors
+make[2]: *** [CMakeFiles/embedded_lld_coff.dir/build.make:219: CMakeFiles/embedded_lld_coff.dir/deps/lld/COFF/SymbolTable.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:259: CMakeFiles/embedded_lld_coff.dir/all] Error 2
+make: *** [Makefile:130: all] Error 2
