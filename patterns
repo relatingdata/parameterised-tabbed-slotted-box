@@ -259,7 +259,7 @@ const texte = (c, x, y, e) => union(vector_text(x, y, c).map(p => rectangular_ex
 
 const polyC = n => {
  switch (n) {
-  case 1: {const a = new CSG.Path2D([[0, 16], [10, 0], [0, -6], [-10, 0]], close).scale(3/4); return a;}}};
+  case 1: { return new CSG.Path2D([[0, 16], [10, 0], [0, -6], [-10, 0]], close).scale(3/4);}}};
 
 
 const attache = (p1, p1pt0, p0, p0pt0) => {
@@ -282,7 +282,7 @@ const attache = (p1, p1pt0, p0, p0pt0) => {
   p1 = p1_s.rotate(p1_s.points[p1Pts[1]], [0, 0, 1], ra);
   delta = pt0.distanceTo(p1.points[p1Pts[0]]);} while ((ra < 360)&&(delta>g_prec));
 
-  return p1;};
+  return p1};
 
 
 const pose = p => {
@@ -311,3 +311,4 @@ const polyR = (n, l = 10, x = 0, y = 0) => {
  chemin = chemin.close();
 
  return chemin.rotateZ(45);};
+ 
