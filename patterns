@@ -36,7 +36,7 @@ const main = (params) => {
 
 
 const tetraedre = () => {
-    const s = [3, 15];
+ const s = [3, 15];
  return [
   [...s, 45],
   ...[0,1,2].map(i => [s, 0, 0, i])];};
@@ -311,5 +311,3 @@ const polyR = (n, l = 10, x = 0, y = 0) => {
  chemin = chemin.close();
 
  return chemin.rotateZ(45);};
-
-
