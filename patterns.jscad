@@ -232,8 +232,6 @@ const rendu = p => p.map(p => pose(p));
 const rendun = p => {
  let r = [], t, b, pa, c;
 
-// return p.map(p => pose(p));
-
  for(let i in p) {
   r.push(pose(p[i]));
 
