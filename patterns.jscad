@@ -22,20 +22,6 @@ function getParameterDefinitions() {
    initial: `rendu`}];}
 
 
-const main = (params) => {
- let p = [], l, i;
- 
- l = eval(`${params.patron}()`);
-
- if(l[0][0] > 0) p.push(polyR(l[0][0], l[0][1]).rotateZ(l[0][2]));
- else p.push(polyC(-l[0][0]).translate(l[0][1]));
- for(i = 1; i < l.length; i++) {
-  if(l[i][0][0] > 0) p.push(attache(polyR(l[i][0][0], l[i][0][1]), l[i][1], p[l[i][2]], l[i][3]));
-  else p.push(attache(polyC(-l[0][0]), l[i][1], p[l[i][2]], l[i][3]))}
-
- return eval(`${params.rendu}(p)`);};
-
-
 const tetraedre = () => {
  const s = [3, 15];
  return [
@@ -127,7 +113,7 @@ const icosaedre = () => {
 
 
 const  catalan1 = () => {
- const s = -1;
+ const s = -4;
  return [
   [s, [-90, 0]],
   [s, 3,  0, 0],
@@ -191,17 +177,14 @@ const icosaedreTronque = () => {
  const s = 10, t = [5, s], u = [6, s];
  return [
   [...u, 12],
-        ...[0, 1, 2, 3, 4, 5].map(i => [[5 + (i % 2), 10], 0, 0, i]),
-//               ...[1, 3, 5].map(i => [[u, 0, i, 2], [u, 0, i + 1, 2], [t, 0, i + 1, 3]]),
-[u, 0, 1, 2], [u, 0, 1 + 1, 2], [t, 0, 1 + 1, 3],
-[u, 0, 3, 2], [u, 0, 3 + 1, 2], [t, 0, 3 + 1, 3],
-[u, 0, 5, 2], [u, 0, 5 + 1, 2], [t, 0, 5 + 1, 3],
+       ...[0, 1, 2, 3, 4, 5].map(i => [[5 + (i % 2), 10], 0, 0, i]),
+   ...[].concat(...[1, 3, 5].map(i => [[u, 0, i, 2], [u, 0, i + 1, 2], [t, 0, i + 1, 3]])),
                   ...[7, 13].map(i => [t, 0, i, 4]),
- [t, 0, 11, 3],
- ...[10, 12, 15, 18, 21, 20].map(i => [u, 0, i, 3]),
-              ...[8, 11, 14].map(i => [u, 0, i, 4]),
-             ...[19, 26, 27].map(i => [t, 0, i, 3]),
- [u, 0, 28, 3]];};
+  [t, 0, 11, 3],
+  ...[10, 12, 15, 18, 21, 20].map(i => [u, 0, i, 3]),
+               ...[8, 11, 14].map(i => [u, 0, i, 4]),
+              ...[19, 26, 27].map(i => [t, 0, i, 3]),
+ [ u, 0, 28, 3]];};
 
 
 
@@ -227,87 +210,90 @@ const pt_rhombicosidodecaedre = () => {
 const rendu2d = p => p.map(p => polygon(p));
 
 
+const pose = p => {
+ const c = [`black`, `red`, `red`, `tomato`, `lightBlue`, `maroon`, `orange`, `tan`, `red`,][p.points.length];
+ return union(linear_extrude({height: 0.2}, p.expandToCAG(0.1, 16)).setColor(css2rgb(`black`)), linear_extrude({height: 0.1}, p.innerToCAG()).setColor(css2rgb(c)));};
+
+
 const rendu = p => p.map(p => pose(p));
-
-const rendun = p => {
- let r = [], t, b, pa, c;
-
- for(let i in p) {
-  r.push(pose(p[i]));
-
-  t = texte(i, 0, 0, 0.125).setColor(css2rgb(`black`));
-  b = t.getBounds();
-  r.push(t.translate(centre(p[i].points).minus((b[1].minus(b[0])).dividedBy(2))));
-  pa = p[i].points;
-  for(j=0; j<pa.length; j++) {
-   c = centre([pa[j], pa[(j+1) % pa.length], centre(pa)]);
-   r.push(texte(j.toString(), 0, 0, 0.075).translate(c).setColor(css2rgb(`blue`)));}}
- return r;};
 
 
 const centre  = d => {
  let r = new CSG.Vector2D([0, 0]);
-
  for(let i=0; i<d.length; i++) {r = r.plus(d[i]);}
  r = r.dividedBy(d.length);
  return r;};
 
 
-const texte = (c, x, y, e) => union(vector_text(x, y, c).map(p => rectangular_extrude(p, {w: 2, h: 2}).scale(e)));
+const texte = (c, x, y, e, co) => union(vector_text(x, y, c.toString()).map(p => rectangular_extrude(p, {w: 2, h: 2}).scale(e))).setColor(css2rgb(co));
  
 
-const polyC = n => {
- switch (n) {
-  case 1: { return new CSG.Path2D([[0, 16], [10, 0], [0, -6], [-10, 0]], close).scale(3/4);}}};
+const rendun = p => {
+ const co = [`black`, `blue`];
+ let r = [], t, b, pa, c;
+ p.map((P,i) => {
+  r.push(pose(P));
 
+  t = texte(i, 0, 0, 0.125, co[0]);
+  b = t.getBounds();
+  let pa = P.points;
+  r.push(t.translate(centre(pa).minus((b[1].minus(b[0])).dividedBy(2))));
+  for(j=0; j<pa.length; j++) {
+   c = centre([pa[j], pa[(j+1) % pa.length], centre(pa)]);
+   r.push(texte(j, 0, 0, 0.075, co[1]).translate(c));}});
+ return r;};
 
-const attache = (p1, p1pt0, p0, p0pt0) => {
- p0Pts = [p0pt0];
- p1Pts = [p1pt0];
+const attache = (p1, s1, p0, s0) => {
+ let P0 = [s0];
+ let P1 = [s1];
  
- p0Pts.push((p0pt0 + 1)%p0.points.length);
- p1Pts.push((p1pt0 + 1)%p1.points.length);
-        
- ptDest = p0.points[p0Pts[0]];
- ptOrig = p1.points[p1Pts[1]];
- p1 = p1.translate(ptDest.minus(ptOrig));
+ P0.push((s0 + 1)%p0.points.length);
+ P1.push((s1 + 1)%p1.points.length);
+
+ p1 = p1.translate(p0.points[P0[0]].minus(p1.points[P1[1]]));
     
- g_prec = 0.01;
- ra = 0;
- p1_s = p1;
- pt0 = p0.points[p0Pts[1]];
+ let p = 0.05;
+ let r = 0, d = 0;
+ let ps = p1;
+ let pt = p0.points[P0[1]];
  do {
-  ra += g_prec;
-  p1 = p1_s.rotate(p1_s.points[p1Pts[1]], [0, 0, 1], ra);
-  delta = pt0.distanceTo(p1.points[p1Pts[0]]);} while ((ra < 360)&&(delta>g_prec));
+  r += p;
+  p1 = ps.rotate(ps.points[P1[1]], [0, 0, 1], r);
+  d = pt.distanceTo(p1.points[P1[0]]);} while((r < 360) && (d > p));
 
   return p1};
 
 
-const pose = p => {
-
- switch(p.points.length) {
-  case 3: col = `tomato`; break;
-  case 4: col = `lightBlue`; break;
-  case 5: col = `maroon`; break;
-  case 6: col = `orange`; break;
-  case 8: col = `tan`; break;
-  default: col = `red`;}
-
- return union(linear_extrude({height:0.2}, p.expandToCAG(0.1, 16)).setColor(css2rgb(`black`)), linear_extrude({height:0.1}, p.innerToCAG()).setColor(css2rgb(col)));};
-
-
 const polyR = (n, l = 10, x = 0, y = 0) => {
- let chemin, p0;
-    
+
  l = l/(2*Math.sin(Math.PI/n));
- p0 = [x + l*Math.cos(0), y + l*Math.sin(0)];  
- chemin = new CSG.Path2D([ p0 ]);
+ let p = [x + l*Math.cos(0), y + l*Math.sin(0)];  
+ let c = new CSG.Path2D([p]);
     
  for(let i = 1 ; i <= n ; i++) {
-  chemin = chemin.appendPoint([x + l*Math.cos(i*2*Math.PI/n), y + l*Math.sin(i*2*Math.PI/n)]);}
- chemin = chemin.appendPoint(p0);
- chemin = chemin.close();
+  c = c.appendPoint([x + l*Math.cos(i*2*Math.PI/n), y + l*Math.sin(i*2*Math.PI/n)]);}
+ c = c.appendPoint(p);
+ c = c.close();
 
- return chemin.rotateZ(45);};
- 
+ return c.rotateZ(45);};
+
+
+const polyC = n => {
+ switch (n) {
+  case 4: { return new CSG.Path2D([[0, 16], [10, 0], [0, -6], [-10, 0]], close).scale(3/4);}}};
+
+
+const main = params => {
+
+ let l = eval(`${params.patron}()`);
+
+ let p = [];
+
+ if(l[0][0] > 0) p.push(polyR(l[0][0], l[0][1]).rotateZ(l[0][2]));
+ else p.push(polyC(-l[0][0]).translate(l[0][1]));
+
+ for(let i = 1; i < l.length; i++) {
+  if(l[i][0][0] > 0) p.push(attache(polyR(l[i][0][0], l[i][0][1]), l[i][1], p[l[i][2]], l[i][3]));
+  else p.push(attache(polyC(-l[0][0]), l[i][1], p[l[i][2]], l[i][3]))}
+
+ return eval(`${params.rendu}(p)`);};
