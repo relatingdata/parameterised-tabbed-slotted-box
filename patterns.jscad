@@ -6,20 +6,17 @@
 //
 
 
+
 function getParameterDefinitions() {
  return [
-     {name: `patron`,
-      type: `choice`,
-   caption: `Patron :`,
-  captions: [ `Catalan 1`, `Dodecaedre`, `Boite Octo.`, `Tetraedre`, `Icosaedre`, `Cube`, `Blocktagon:Jack`, `Petit rhombicosidodecaedre`, `Icosaedre tronque`],
-    values: [ `catalan1`, `dodecaedre`, `boiteOctogonale`, `tetraedre`, `icosaedre`, `acube`, `bt_jack`, `pt_rhombicosidodecaedre`, `icosaedreTronque`],
-   initial: `catalan1`}, 
-     {name: `rendu`,
-      type: `choice`,
-   caption: `Rendu :`,
-  captions: [ `Developpement`, `Net Numbered`, `2d pour svg`],
-    values: [ `rendu`, `rendun`, `rendu2d`],
-   initial: `rendu`}];}
+  [`patron`, `choice`, `Patron :`,
+  [ `Catalan 1`, `Dodecaedre`, `Boite Octo.`, `Tetraedre`, `Icosaedre`, `Cube`, `Blocktagon:Jack`, `Petit rhombicosidodecaedre`, `Icosaedre tronque`],
+  [ `catalan1`, `dodecaedre`, `boiteOctogonale`, `tetraedre`, `icosaedre`, `acube`, `bt_jack`, `pt_rhombicosidodecaedre`, `icosaedreTronque`], `catalan1`], 
+  [`rendu`, `choice`,  `Rendu :`,
+  [ `Developpement`, `Net Numbered`, `2d pour svg`],
+  [ `rendu`, `rendun`, `rendu2d`],`rendu`]]
+  .map(P => (P[1] == `choice`) ? {
+      name: P[0], type: P[1], caption: P[2], captions: P[3], values: P[4],initial: P[5]}:{});}
 
 
 const tetraedre = () => {
