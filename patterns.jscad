@@ -5,19 +5,15 @@
 //
 //
 
-
-
 function getParameterDefinitions() {
  return [
-  [`patron`, `choice`, `Patron :`,
-  [ `Catalan 1`, `Dodecaedre`, `Boite Octo.`, `Tetraedre`, `Icosaedre`, `Cube`, `Blocktagon:Jack`, `Petit rhombicosidodecaedre`, `Icosaedre tronque`],
-  [ `catalan1`, `dodecaedre`, `boiteOctogonale`, `tetraedre`, `icosaedre`, `acube`, `bt_jack`, `pt_rhombicosidodecaedre`, `icosaedreTronque`], `catalan1`], 
-  [`rendu`, `choice`,  `Rendu :`,
-  [ `Developpement`, `Net Numbered`, `2d pour svg`],
-  [ `rendu`, `rendun`, `rendu2d`],`rendu`]]
-  .map(P => (P[1] == `choice`) ? {
-      name: P[0], type: P[1], caption: P[2], captions: P[3], values: P[4],initial: P[5]}:{});}
-
+  [`patron`, `Patron :`,
+   [ `Catalan 1`, `Dodecaedre`, `Boite Octo.`, `Tetraedre`, `Icosaedre`, `Cube`, `Blocktagon:Jack`, `Petit rhombicosidodecaedre`, `Icosaedre tronque`],
+   [ `catalan1`, `dodecaedre`, `boiteOctogonale`, `tetraedre`, `icosaedre`, `acube`, `bt_jack`, `pt_rhombicosidodecaedre`, `icosaedreTronque`], `catalan1`], 
+  [`rendu`, `Rendu :`,
+   [ `Developpement`, `Net Numbered`, `2d pour svg`],
+   [ `rendu`, `rendun`, `rendu2d`],`rendu`]]
+   .map(P => true ? {name: P[0], type: `choice`, caption: P[1], captions: P[2], values: P[3], initial: P[4]}:{});}
 
 const tetraedre = () => {
  const s = [3, 15];
@@ -112,62 +108,62 @@ const icosaedre = () => {
 const  catalan1 = () => {
  const s = -4;
  return [
-  [s, [-90, 0]],
-  [s, 3,  0, 0],
-  [s, 2,  1, 1],
-  [s, 3,  2, 0],
-  [s, 3,  3, 0],
-  [s, 3,  4, 0],
-  [s, 3,  5, 0],
-  [s, 2,  4, 1],
-  [s, 0,  7, 3],
-  [s, 1,  8, 2],
-  [s, 0,  9, 3],
-  [s, 1, 10, 2],
-  [s, 3,  7, 0],
-  [s, 3, 12, 0],
-  [s, 3, 13, 0],
-  [s, 1, 14, 2],
-  [s, 0, 15, 3],
-  [s, 1, 16, 2],
-  [s, 0, 17, 3],
-  [s, 2, 14, 1],
-  [s, 3, 19, 0],
-  [s, 3, 20, 0],
-  [s, 2, 21, 1],
-  [s, 3, 22, 0],
-  [s, 2, 13, 1],
-  [s, 3, 24, 0],
-  [s, 3, 25, 0],
-  [s, 2, 26, 1],
-  [s, 3, 27, 0],
-  [s, 3, 28, 0],
-  [s, 1, 13, 2],
-  [s, 0, 30, 3],
-  [s, 1, 31, 2],
-  [s, 0, 32, 3],
-  [s, 2, 12, 1],
-  [s, 3, 34, 0],
-  [s, 2, 35, 1],
-  [s, 3, 36, 0],
-  [s, 3, 37, 0],
-  [s, 3, 35, 0],
-  [s, 2, 39, 1],
-  [s, 3, 40, 0],
-  [s, 3, 41, 0],
-  [s, 1, 12, 2],
-  [s, 0, 43, 3],
-  [s, 0, 44, 3],
-  [s, 1, 45, 2],
-  [s, 0, 46, 3],
-  [s, 1, 47, 2],
-  [s, 3, 43, 0],
-  [s, 3, 49, 0],
-  [s, 2, 50, 1],
-  [s, 3, 51, 0],
-  [s, 3, 52, 0],
-  [s, 1, 53, 1],
-  [s, 3, 54, 3]];};
+  [[-90, 0]],
+  [3,  0, 0],
+  [2,  1, 1],
+  [3,  2, 0],
+  [3,  3, 0],
+  [3,  4, 0],
+  [3,  5, 0],
+  [2,  4, 1],
+  [0,  7, 3],
+  [1,  8, 2],
+  [0,  9, 3],
+  [1, 10, 2],
+  [3,  7, 0],
+  [3, 12, 0],
+  [3, 13, 0],
+  [1, 14, 2],
+  [0, 15, 3],
+  [1, 16, 2],
+  [0, 17, 3],
+  [2, 14, 1],
+  [3, 19, 0],
+  [3, 20, 0],
+  [2, 21, 1],
+  [3, 22, 0],
+  [2, 13, 1],
+  [3, 24, 0],
+  [3, 25, 0],
+  [2, 26, 1],
+  [3, 27, 0],
+  [3, 28, 0],
+  [1, 13, 2],
+  [0, 30, 3],
+  [1, 31, 2],
+  [0, 32, 3],
+  [2, 12, 1],
+  [3, 34, 0],
+  [2, 35, 1],
+  [3, 36, 0],
+  [3, 37, 0],
+  [3, 35, 0],
+  [2, 39, 1],
+  [3, 40, 0],
+  [3, 41, 0],
+  [1, 12, 2],
+  [0, 43, 3],
+  [0, 44, 3],
+  [1, 45, 2],
+  [0, 46, 3],
+  [1, 47, 2],
+  [3, 43, 0],
+  [3, 49, 0],
+  [2, 50, 1],
+  [3, 51, 0],
+  [3, 52, 0],
+  [1, 53, 1],
+  [3, 54, 3]].map(i => [s, ...i]);};
 
 
 const icosaedreTronque = () => {
@@ -184,21 +180,22 @@ const icosaedreTronque = () => {
  [ u, 0, 28, 3]];};
 
 
-
 const pt_rhombicosidodecaedre = () => {
  const s = 10, t = [3, s], u = [4, s], v = [5, s];
+ const r = [0, 1, 2, 3, 4];
  return [
-  [...v, -30],             ...[0, 1, 2, 3, 4].map(i => [u, 0, 0, i]),
-                           ...[1, 2, 3, 4, 5].map(i => [t, 0, i, 3]),
-                           ...[1, 2, 3, 4, 5].map(i => [v, 0, i, 2]),
-                      ...[11, 12, 13, 14, 15].map(i => [u, 0, i, 2]),
-                      ...[11, 12, 13, 14, 15].map(i => [u, 0, i, 3]),
-                      ...[11, 12, 13, 14, 15].map(i => [u, 0, i, 4]),
-  ...[16, 17, 18, 19, 20, 21, 22, 23, 24, 25].map(i => [t, 0, i, 3]),
-                      ...[19, 24, 25, 21, 22].map(i => [v, 0, i, 2]),
-                      ...[41, 42, 43, 44, 45].map(i => [u, 0, i, 2]),
-                          ...[41, 42, 43, 44].map(i => [u, 0, i, 3]),
-                          ...[46, 47, 48, 49].map(i => [t, 0, i, 3]),
+  [...v, -30],       ...r.map(i => [u, 0, 0, i]),
+                     ...r.map(i => [t, 0, i + 1, 3]),
+                     ...r.map(i => [v, 0, i + 1, 2]),
+                     ...r.map(i => [u, 0, i + 11, 2]),
+                     ...r.map(i => [u, 0, i + 11, 3]),
+                     ...r.map(i => [u, 0, i + 11, 4]),
+                     ...r.map(i => [t, 0, i + 16, 3]),
+                     ...r.map(i => [t, 0, i + 21, 3]),
+  ...[19, 24, 25, 21, 22].map(i => [v, 0, i, 2]),
+                     ...r.map(i => [u, 0, i + 41, 2]),
+      ...[41, 42, 43, 44].map(i => [u, 0, i, 3]),
+      ...[46, 47, 48, 49].map(i => [t, 0, i, 3]),
   [v, 0, 47, 2],
   [u, 0, 41, 4],
   [t, 0, 47, 1]];};
@@ -264,15 +261,11 @@ const attache = (p1, s1, p0, s0) => {
 const polyR = (n, l = 10, x = 0, y = 0) => {
 
  l = l/(2*Math.sin(Math.PI/n));
- let p = [x + l*Math.cos(0), y + l*Math.sin(0)];  
- let c = new CSG.Path2D([p]);
+ let c = new CSG.Path2D([[x + l, y]]);
     
- for(let i = 1 ; i <= n ; i++) {
-  c = c.appendPoint([x + l*Math.cos(i*2*Math.PI/n), y + l*Math.sin(i*2*Math.PI/n)]);}
- c = c.appendPoint(p);
- c = c.close();
-
- return c.rotateZ(45);};
+ for(let i = 1 ; i <= n ; i++)
+  c = c.appendPoint([x + l*Math.cos(i*2*Math.PI/n), y + l*Math.sin(i*2*Math.PI/n)]);
+ return c.appendPoint([x + l, y]).close().rotateZ(45);};
 
 
 const polyC = n => {
