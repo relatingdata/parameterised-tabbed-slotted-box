@@ -28,7 +28,7 @@ const involuteGear = (Teeth, Pitch, pressure, clearance, thickness) => {
 
        resolution = 8;
 
- let P = [new CSG.Vector2D(0,0)];
+ let P = [new CSG.Vector2D(0, 0)];
 
  for(let i = 0; i <= resolution; i++) {
   let                   a = m*i/resolution,
@@ -56,16 +56,18 @@ const text = (c, x, y, e, co) => union(vector_text(x, y, c.toString()).map(p => 
 
 const main = () => {
 
- const co = [`green`, `red`, `blue`];
+ const co = [`green`, `red`, `blue`, `yellow`, `black`, `black`];
 
- const gear = [1,1.5,2.5].map(i => involuteGear(Params.Teeth*i, Params.Pitch, Params.pressure, Params.clearance, Params.thickness));
+ const gear = [1, 1.5, 2.5].map(i => involuteGear(Params.Teeth*i, Params.Pitch, Params.pressure, Params.clearance, Params.thickness));
 
- return union(color(co[1], gear[0]).rotateZ(18).translate([0.3,0,0]), 
-              color(co[0], gear[1]).translate([Params.Pitch*4 + 0.3,0,0]),
-              color(co[2], difference(union(cylinder({r: 25, h:Params.thickness}),
-                                            torus({ro: 25, ri:Params.thickness/2}).translate([0,0, Params.thickness/2])).translate([0,0, -Params.thickness/2]),
-                                      gear[2])).translate([Params.Pitch*2.5,0,0]).scale([1,1,1.5]),
-              text(`JS`,0,0,0.28,`black`).translate([-5,-2.5,2]),
-              text(`CAD`,0,0,0.33,`black`).translate([10.5,-3.5,2]),
-              color(`black`, difference(cube({size: [70,30,3], roundradius: 2, resolution: 8, center: true}),
-                                        cylinder({r: 3, h:10, center: true}).translate([25,0,0]))).translate([20,0,0]));};
+ return union(color(co[3], gear[0]).rotateZ(18).translate([0.3, 0, 0]), 
+              color(co[1], gear[1]).translate([Params.Pitch*4 + 0.3, 0, 0]),
+              color(co[0], difference(union(cylinder({r: 25, h:Params.thickness}),
+                                            torus({ro: 25, ri:Params.thickness/2}).translate([0, 0, Params.thickness/2])).translate([0, 0, -Params.thickness/2]),
+                                      gear[2])).translate([Params.Pitch*2.5, 0, 0]).scale([1, 1, 1.5]),
+              text(`JS`, 0, 0, 0.28, co[4]).translate([-5, -2.5, 2]),
+              text(`CAD`, 0, 0, 0.33, co[5]).translate([10.5, -3.5, 2]),
+              color(co[2], difference(cube({size: [70, 30, 3], roundradius: 2, resolution: 8, center: true}),
+                                        cylinder({r: 3, h:10, center: true}).translate([25, 0, 0]))).translate([20, 0, 0]));};
+
+
