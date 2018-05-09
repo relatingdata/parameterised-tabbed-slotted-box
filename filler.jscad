@@ -55,7 +55,7 @@ const main = () => {
             linear_extrude({height: T, center: false }, polygon({ points: [[-L/2, -hh[3]/2], [-L/2 - b[1], hh[3]/2], [L/2 + b[0], hh[3]/2], [L/2, -hh[3]/2]], closed: true})).translate([0, 0, -T/2]).rotateX(90),
             ];
  
- console.log(hh[0],hh[1], hh[2], hh[3], bb[0], bb[1], bb[2], bb[3]);
+ // console.log(hh[0],hh[1], hh[2], hh[3], bb[0], bb[1], bb[2], bb[3]);
  
  return union(
   color("red",   A[0]).rotateY(bb[0]).translate([ R - T/2 + b[0]/2, -W/2, -H/2]),
