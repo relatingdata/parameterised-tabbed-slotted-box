@@ -61,7 +61,7 @@ const main = () => {
  // console.log(hh[0], hh[1], hh[2], hh[3], `\n`, bb[0][0], bb[0][1], bb[1][0], bb[1][1], `\n`);
  // console.log(JSON.stringify(hhhh)); return cube();
  
- return color "orange", union(
+ return color("orange", union(
   A[0].rotateX(0).rotateY( bb[0][0]).translate([           (R - T/2)*H/hh[0][0] + b[0][0]/2, -W/2, -H/2 - (R - T/2)*b[0][0]/hh[0][0]]),
   A[1].rotateX(0).rotateY(-bb[0][1]).translate([      -L - (R - T/2)*H/hh[0][1] - b[0][1]/2, -W/2, -H/2 - (R - T/2)*b[0][1]/hh[0][1]]),
   A[2].rotateX(-bb[1][0]).rotateY(0).translate([-L/2,      (R - T/2)*H/hh[1][0] + b[1][0]/2,       -H/2 - (R - T/2)*b[1][0]/hh[1][0]]),
