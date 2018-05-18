@@ -7,7 +7,7 @@
 
 //'use strict';
 
-const resolution = 64;
+const resolution = 16;
 
 const e = (o, t, e, r) => {
  return intersection(
@@ -50,7 +50,7 @@ const W = 170 - 25;
 const L = 135 - 65 - 25;
 const T = 2.5;
 const h = 6;
-const r = 3.5;
+const r = 13.5;
 const rr = 3;
 const l = 12.5;
 const w = 12.5;
@@ -98,7 +98,7 @@ const main = () => {
      e(      R,    T, i[0][0], x===0 || x===1 ? (bb[0][0] - 90) : (90 - bb[0][1])).translate([i[1][1][0], i[1][1][1], 0]),
      q(      R,    T, hhhh[x], i[1][0], 0).rotateX(i[1][2]).rotateY(i[1][3]).translate(i[1][1]),
      s( R + rr,       rr, T, i[2][0], 0).translate(i[2][1]),
-     s( R +  rr + l,   r, T, [i[2][0][0], i[2][0][1], -i[2][0][2]], 1).translate([i[2][1][0], i[2][1][1], rr + r/2]),
+     s( R +  rr + l,   r, T, [i[2][0][0], i[2][0][1], -i[2][0][2]], 1).translate(i[2][1]).translate([0,0,r]),
      q( R + rr - T + l, l, T, i[1][0],0).translate([i[2][1][0], i[2][1][1], rr])
      /* f(2*R - T,    T, i[3][0]).translate(i[3][1]) */ ])),
 
@@ -135,10 +135,10 @@ const main = () => {
    [[-1, -1,  1], [-L - R - rr + T - l - b[0][1], -W - R - rr + T - w - b[1][1], R-r]]]
    .map(i => e(r, T, i[0], 0).translate(i[1])),
 */  
-   [[W + b[1][0] + b[1][1], [  1, -1], 90,  0, [     R + rr - T + l + b[0][0],         -W - T/2 - b[1][1],  rr + r - T]],
-    [W + b[1][0] + b[1][1], [ -1, -1], 90,  0, [-L - R - rr + T - l - b[0][1],         -W - T/2 - b[1][1],  rr + r - T]],
-    [L + b[0][0] + b[0][1], [  1,  1],  0, 90, [             T/2 + b[0][0],      R + rr - T + w + b[1][0],  rr + r - T]],
-    [L + b[0][0] + b[0][1], [  1, -1],  0, 90, [             T/2 + b[0][0], -W - R - rr + T - w - b[1][1],  rr + r - T]]]
+   [[W + b[1][0] + b[1][1], [  1, -1], 90,  0, [     R + rr - T + l + b[0][0],         -W - b[1][1],  rr + r - T]],
+    [W + b[1][0] + b[1][1], [ -1, -1], 90,  0, [-L - R - rr + T - l - b[0][1],         -W - b[1][1],  rr + r - T]],
+    [L + b[0][0] + b[0][1], [  1,  1],  0, 90, [                      b[0][0],      R + rr - T + w + b[1][0],  rr + r - T]],
+    [L + b[0][0] + b[0][1], [  1, -1],  0, 90, [                      b[0][0], -W - R - rr + T - w - b[1][1],  rr + r - T]]]
     .map(i => q(r, T, i[0], i[1], 0).rotateX(i[2]).rotateY(i[3]).translate(i[4])),
 
    cube({size: [l, W + b[1][0] + b[1][1], T], center: true}).translate([     R + rr - T + l/2 + b[0][0],               -W/2 - b[1][1],  rr - T/2]),
