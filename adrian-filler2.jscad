@@ -7,31 +7,27 @@
 
 const resolution = 64;
 
-const e = (o, t, e, r) => {
- return intersection(
+const e = (o, t, e, r) => intersection(
   difference(
    sphere({r: o,     fn: resolution, center: true}),
    sphere({r: o - t, fn: resolution, center: true})),
   cube({size: o, center: true}).translate([e[0]*o/2, e[1]*o/2, e[2]*o/2]),
-  cube({size: o, center: true}).translate([e[0]*o/2, e[1]*o/2, e[2]*o/2]).rotateY(r));};
+  cube({size: o, center: true}).translate([e[0]*o/2, e[1]*o/2, e[2]*o/2]).rotateY(r));
 
-const f = (o, h, q) => {
-  return intersection(
+const f = (o, h, q) => intersection(
    difference(
     cube({size: [2*o, 2*o, h], center: true}),
     cylinder({r: o, h: h,  fn: resolution, center: true})),
-   cube({size: [o, o, h], center: true}).translate([q[0]*o/2, q[1]*o/2, 0]));};
+   cube({size: [o, o, h], center: true}).translate([q[0]*o/2, q[1]*o/2, 0]));
 
-const q = (o, t, h, q, r) => {
-  return intersection(
+const q = (o, t, h, q, r) => intersection(
    difference(
     cylinder({r: o,     h: h, fn: resolution, center: true}),
     cylinder({r: o - t, h: h, fn: resolution, center: true})).translate([0, 0, -h/2]),
    cube({size: [o, o, h], center: true}).translate([q[0]*o/2, q[1]*o/2, -h/2]),
-   cube({size: [o, o, h], center: true}).translate([q[0]*o/2, q[1]*o/2, -h/2]).rotateZ(r));};
+   cube({size: [o, o, h], center: true}).translate([q[0]*o/2, q[1]*o/2, -h/2]).rotateZ(r));
   
-const s = (o, i, t, e, h) => {
- return intersection(
+const s = (o, i, t, e, h) => intersection(
   difference(
    torus({ro: o - t, ri: i,     fni: resolution ,fno: resolution, center: true}),
    torus({ro: o - t, ri: i - t, fni: resolution, fno: resolution, center: true})),
@@ -39,7 +35,7 @@ const s = (o, i, t, e, h) => {
   difference(
     cylinder({r: o - t + i*h,      h: 2*i, fn: resolution, centre: true}).translate([0,0,-i]),
     cylinder({r: o - i - t  + i*h, h: 2*i, fn: resolution, centre: true}).translate([0,0,-i])),
-   cube({size: [(o + i - t), (o + i - t), i], center: true}).translate([e[0]*(o + i - t)/2, e[1]*(o + i - t)/2, e[2]*i/2])));};
+   cube({size: [(o + i - t), (o + i - t), i], center: true}).translate([e[0]*(o + i - t)/2, e[1]*(o + i - t)/2, e[2]*i/2])));
 
 
 const R = 12.5;
