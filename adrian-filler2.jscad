@@ -69,7 +69,7 @@ const main = () => {
              .map(i => linear_extrude({height: T, center: false }, polygon({ points: i[0], closed: true})).translate([0, 0, -T/2]).rotateY(i[1]).rotateX(i[2]));
  
 
- return union(
+ return color("lightblue",union(
   A[0].rotateX(0).rotateY( bb[0][0]).translate([           (R - T/2)*H/hh[0][0] + b[0][0]/2, -W/2, -H/2 - (R - T/2)*b[0][0]/hh[0][0]]),
   A[1].rotateX(0).rotateY(-bb[0][1]).translate([      -L - (R - T/2)*H/hh[0][1] - b[0][1]/2, -W/2, -H/2 - (R - T/2)*b[0][1]/hh[0][1]]),
   A[2].rotateX(-bb[1][0]).rotateY(0).translate([-L/2,      (R - T/2)*H/hh[1][0] + b[1][0]/2,       -H/2 - (R - T/2)*b[1][0]/hh[1][0]]),
@@ -148,4 +148,4 @@ const main = () => {
 //   cube({size: [L + 2*(2*R - T + l) + b[0][0] + b[0][1], W + 2*(2*R - T + w) + b[1][0] + b[1][1], T], center: true}),
 //   cube({size: [L + 2*(2*R - T)     + b[0][0] + b[0][1],     W + 2*(2*R - T) + b[1][0] + b[1][1], T], center: true}))
 //  .translate([-L/2 + b[0][0]/2 - b[0][1]/2, -W/2 + b[1][0]/2 - b[1][1]/2, R - T/2])
-).center([true,false,false]).scale(1);};
+)).center([true,false,false]).scale(1);};
