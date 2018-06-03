@@ -40,7 +40,7 @@ const s = (o, i, t, s, h) => intersection(
 
 const main = () => {
  const R = 12.5;
- const H = 82;
+ const H = 70;
  const W = 125;
  const L = 45;
  const T = 2.3;
