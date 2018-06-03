@@ -1,3 +1,4 @@
+
 //
 //
 // Adrians Filler
@@ -5,7 +6,7 @@
 //
 //'use strict';
 
-const resolution = 8;
+const resolution = 32;
 
 const e = (o, t, e, r) => intersection(
   difference(
@@ -40,18 +41,18 @@ const s = (o, i, t, s, h) => intersection(
 const main = () => {
  const R = 12.5;
  const H = 82;
- const W = 170 - 25;
- const L = 135 - 65 - 25;
- const T = 3.0;
- const RR = 2.0;
+ const W = 125;
+ const L = 45;
+ const T = 2.3;
+ const RR = 2.31;
  const t = 1.0;
  const r = 3.5;
  const c = 4;
  const rr = 4.5;
- const l = 12.5;
- const w = 12.5;
+ const l = 8.0;
+ const w = 8.0;
  const h = 0;
- const b = [[67, 5], [0, 0]];[20 + 5, 20 + 9, 20 + 13, 20 + 17];[0, 0, 0, 0];[H, H, H, H];
+ const b = [[55, 0.5], [0, 0]];[20 + 5, 20 + 9, 20 + 13, 20 + 17];[0, 0, 0, 0];[H, H, H, H];
 
  const hh = [b[0].map(i => Math.hypot(H, i)), b[1].map(i => Math.hypot(H, i))];
  const hhh = b[0].map(j => b[1].map(i => Math.hypot(H, i,j)));
