@@ -11,14 +11,14 @@ function getParameterDefinitions() {
   return [
   [`PTBox`, `group`, `Parameterised Tabbed Box`, Black, 4 ],
   [`PTDim`, `group`, `Internal Dimensions`, Black, 5 ],
-  [`width`,            `float`, 20,  `Diepte doos in mm:`,         `Front to Back Length of box in mm:`, Red],
-  [`length`,           `float`, 20,  `Breedte doos in mm:`,        `Left to Right Width of box in mm:`, Green],
+  [`width`,            `float`, 50,  `Diepte doos in mm:`,         `Front to Back Length of box in mm:`, Red],
+  [`length`,           `float`, 40,  `Breedte doos in mm:`,        `Left to Right Width of box in mm:`, Green],
   [`height`,           `float`, 20,  `Hoogte doos in mm:`,         `Bottom to Top Height of box in mm:`, Blue],
-  [`tabsize`,          `int`,   10,  `Tanden grootte in mm:`,      `Edge tab size in mm:`, Black],
+  [`tabsize`,          `int`,   5,  `Tanden grootte in mm:`,      `Edge tab size in mm:`, Black],
   [`PTMat`, `group`, `Material Thicknesses`, Black, 5 ],
   [`thickfront`,       `float`, 3,   `Dikte materiaal:`,           `Thickness of the front material:`, Red],
   [`thickback`,        `float`, 3,   `Dikte materiaal:`,           `Thickness of the back material:`, Red],
-  [`partitions`,       `int`,   0,   `Dikte materiaal:`,           `Number of partitions:`, Green],
+  [`partitions`,       `int`,   1,   `Dikte materiaal:`,           `Number of partitions:`, Green],
   [`thickleft`,        `float`, 3,   `Dikte materiaal:`,           `Thickness of the left side material:`, Green],
   [`thickmiddle`,      `float`, 3,   `Dikte materiaal:`,           `Thickness of the middle partition material:`, Green],
   [`thickright`,       `float`, 3,   `Dikte materiaal:`,           `Thickness of the right side material:`, Green],
@@ -28,7 +28,7 @@ function getParameterDefinitions() {
   [`overtopwidth`,     `float`, 3,   `Dikte materiaal:`,           `Extra width top  material:`, Blue],
   [`overbottomlength`, `float`, 3,   `Dikte materiaal:`,           `Extra length bottom material:`, Blue],
   [`overbottomwidth`,  `float`, 3,   `Dikte materiaal:`,           `Extra width bottom material:`, Blue],
-  [`explosion`,        `float`, 0.0, `Explosion`,                  `Assembled view explosion (times Thickness):`, Black],
+  [`explosion`,        `float`, 2.0, `Explosion`,                  `Assembled view explosion (times Thickness):`, Black],
 //[`kerf`,             `float`, 0.0, `Breedte laserstraal in mm:`, `Width of laser beam cut in mm:`, Black],
   [`transparent`, `choice`, [`TRANSPARENT`, `SOLID`], [`Transparent`, `Solid`], [`Transparent`, `Solid`], `Colour:`, `Colour:`, `SOLID`],
   /* [
@@ -121,7 +121,7 @@ const main = (params) => {
        SS = pp.map((p) => ss.map((s) =>(S[s] + Th[p][s])/2)),
 
        TT = pp.map((q) => pp.map((p) => ss.map((s) => union(Array.from({length: Math.ceil((SS[p][s] - TS)/TS)},
-                                           (v, j) => tt[q][p][s].translate([s == W ? 2*(j)*TS - S[s]/2 + TS: 0, s == L ? 2*(j)*TS -S[s]/2 +TS : 0, s == H ? 2*(j)*TS -S[s]/2 + TS : 0])))))),
+                                           (v, j) => tt[q][p][s].translate([s == W ? (2*j + 1)*TS - S[s]/2 : 0, s == L ? (2*j + 1)*TS - S[s]/2 : 0, s == H ? (2*j + 1)*TS - S[s]/2 : 0])))))),
 
        // easy to accomodate multiple partitions in the left to right directions
        // as the just punch holes in top/botton and front/back for their tabs :-)
@@ -145,4 +145,4 @@ const main = (params) => {
 
               color(c[W], ...r[W].map((r,i) => i == N || i == F ? union(difference(P[i][W], t[i][W][0]), t[i][W][1]).translate([r + E*e[W][i], 0, 0]) : [])),
               color(c[L], ...r[L].map((r,i) => union(P[i][L], t[i][L]).translate([0, r + E*e[L][i] , 0]))),
-              color(c[H], ...r[H].map((r,i) => i == N || i == F ? difference(P[i][H], t[i][H]).translate([0, 0, r + E*e[H][i]]) : []))).translate([0, 0, 2*(SS[N][H] + Th[N][H])]);};
+              color(c[H], ...r[H].map((r,i) => i == N || i == F ? difference(P[i][H], t[i][H]).translate([0, 0, r + E*e[H][i]]) : []))).translate([0, 0, 2*(SS[N][H] + Th[N][H])]);}
